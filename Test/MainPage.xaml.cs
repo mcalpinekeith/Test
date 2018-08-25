@@ -29,6 +29,24 @@ namespace Test
             //        Padding = new Thickness(0, 20, 0, 0);
             //        break;
             //}
+
+            var bannerImageSource = new UriImageSource 
+            { 
+                Uri = new Uri("http://lorempixel.com/1920/1080/sports/7/"),
+                CachingEnabled = false
+                //CachingEnabled = true,
+                //CacheValidity = new TimeSpan(2, 0, 0, 0) // 2 days
+            };
+
+            BannerImage.Source = bannerImageSource;
+
+            //SmileImage.Source = ImageSource.FromResource("Test.Resources.Images.smile.jpeg");
+
+            //path = Device.OnPlatForm(
+            //  iOS: "clock.png",
+            //  Android: "clock.png"
+            //);
+            //btn.Image = (FileImageSource) ImageSource.FromFile(path);
         }
 
         private void NextButton_Clicked(object sender, System.EventArgs e)
