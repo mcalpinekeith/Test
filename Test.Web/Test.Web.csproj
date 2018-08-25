@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="e2e\" />
+    <Folder Include="src\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="dist\test-web\favicon.ico" />
+    <None Remove="dist\test-web\3rdpartylicenses.txt" />
+    <None Remove="dist\test-web\index.html" />
+  </ItemGroup>
+</Project>
