@@ -1,4 +1,5 @@
 ﻿using System;
+using Test.Navigation;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,7 +12,7 @@ namespace Test
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new Toolbar.MainPage());
         }
 
         protected override void OnStart()
