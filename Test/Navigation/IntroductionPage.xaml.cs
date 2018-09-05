@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Test.Navigation
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class IntroductionPage : ContentPage
     {
         public IntroductionPage()

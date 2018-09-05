@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Test.Data
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AppPropertiesPage : ContentPage
     {
         private App _app = Application.Current as App;

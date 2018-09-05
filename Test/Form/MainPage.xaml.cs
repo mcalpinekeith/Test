@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Test.Form
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
         private List<ContactMethod> _contactMethods = new List<ContactMethod>();

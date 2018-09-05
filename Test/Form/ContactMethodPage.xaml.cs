@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Test.Form
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactMethodPage : ContentPage
     {
         public ListView ContactMethods 

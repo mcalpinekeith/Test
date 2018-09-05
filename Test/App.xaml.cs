@@ -51,7 +51,7 @@ namespace Test
         {
             InitializeComponent();
 
-            MainPage = new Data.AppPropertiesPage();
+            MainPage = new Mvvm.Views.PlaylistPage();
 
             Properties["Username"] = "John";
         }
