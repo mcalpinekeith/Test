@@ -8,11 +8,52 @@ namespace Test
 {
     public partial class App : Application
     {
+        const string TitleKey = "Title";
+        const string IsNotificationsEnabledKey = "IsNotificationsEnabled";
+
+        public string Title
+        {
+            get
+            {
+                if (Properties.ContainsKey(TitleKey))
+                {
+                     return Properties[TitleKey].ToString();
+                }
+
+                return string.Empty;
+            }
+
+            set
+            {
+                Properties[TitleKey] = value;
+            }
+        }
+
+        public bool IsNotificationsEnabled
+        {
+            get
+            {
+                if (Properties.ContainsKey(IsNotificationsEnabledKey))
+                {
+                    return (bool)Properties[IsNotificationsEnabledKey];
+                }
+
+                return false;
+            }
+
+            set
+            {
+                Properties[IsNotificationsEnabledKey] = value;
+            }
+        }
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new Toolbar.MainPage());
+            MainPage = new Data.AppPropertiesPage();
+
+            Properties["Username"] = "John";
         }
 
         protected override void OnStart()

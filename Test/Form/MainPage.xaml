@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    x:Class="Test.Form.MainPage">
+    
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 50, 0, 50" />
+    </ContentPage.Padding>
+    
+    <StackLayout>
+        <Switch IsToggled="true" x:Name="LabelSwitch" />
+        <Label x:Name="SwitchLabel" Text="Switch Label" 
+               IsVisible="{Binding Source={x:Reference LabelSwitch}, Path=IsToggled}" />
+        
+        <Slider x:Name="LabelSlider" Value="15" Maximum="100" Minimum="10" />
+        <Label x:Name="SliderLabel" Text="{Binding Source={x:Reference LabelSlider}, Path=Value, StringFormat='{0:N0}'}" />
+        
+        <Stepper x:Name="LabelStepper" Value="15" Maximum="100" Minimum="10" Increment="5" />
+        <Label x:Name="StepperLabel" Text="{Binding Source={x:Reference LabelStepper}, Path=Value, StringFormat='{0:N0}'}" />
+        
+        <Entry Keyboard="Numeric" Placeholder="Number" TextChanged="Handle_TextChanged" />
+        <Entry Keyboard="Telephone" Placeholder="Phone" />
+        <Entry Placeholder="Password" IsPassword="true" Completed="Handle_Completed" />
+        
+        <Editor BackgroundColor="Silver" VerticalOptions="FillAndExpand" />
+        
+        <Picker x:Name="ContactMethodPicker" Title="Contact Method" SelectedIndexChanged="ContactMethodPicker_SelectedIndexChanged">
+            <!--
+            <Picker.Items>
+                <x:String>SMS</x:String>
+                <x:String>Email</x:String>
+            </Picker.Items>
+            -->
+        </Picker>
+        
+        <DatePicker Date="{x:Static sys:DateTime.Today}" Format="d MMM yyyy" MinimumDate="1 Jan 2016" DateSelected="Handle_DateSelected" />
+        <TimePicker Time="13:00" />
+        
+    </StackLayout>
+</ContentPage>
