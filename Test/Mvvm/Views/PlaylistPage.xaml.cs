@@ -11,7 +11,7 @@ namespace Test.Mvvm.Views
 	{
 		public PlaylistPage ()
 		{
-            BindingContext = new PlaylistViewModel();
+            _viewModel = new PlaylistCollectionViewModel(new PageService());
 
 			InitializeComponent ();
 		}
@@ -21,14 +21,15 @@ namespace Test.Mvvm.Views
             base.OnAppearing();
         }
 
-        void OnAddPlaylist(object sender, EventArgs e)
+        private PlaylistCollectionViewModel _viewModel
         {
-            (BindingContext as PlaylistViewModel).AddPlaylist();
+            get => BindingContext as PlaylistCollectionViewModel;
+            set => BindingContext = value;
         }
 
         void OnPlaylistSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            (BindingContext as PlaylistViewModel).SelectPlaylist(e.SelectedItem as Playlist);
+            _viewModel.SelectPlaylistCommand.Execute(e.SelectedItem);
         }
     }
 }

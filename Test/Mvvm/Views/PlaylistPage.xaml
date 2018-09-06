@@ -1,23 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Test.Mvvm.Views.PlaylistPage"
              Title="{Binding Path=Playlists.Count, StringFormat='Playlists: {0}'}">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 50, 0, 50" />
+    </ContentPage.Padding>
+    
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="OnAddPlaylist" />
+        <ToolbarItem Text="Add" Command="{Binding AddPlaylistCommand}" />
     </ContentPage.ToolbarItems>
-
-    <StackLayout>
-        <ListView x:Name="PlaylistsListView"
-                      SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}"
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}"
                       ItemsSource="{Binding Playlists}"
                       ItemSelected="OnPlaylistSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Title}" Detail="{Binding IsFavorite, StringFormat='Favorite: {0}'}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
-
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Title}" 
+                                  Detail="{Binding IsFavorite, StringFormat='Favorite: {0}'}" 
+                                  TextColor="{Binding Color}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>
