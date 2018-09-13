@@ -26,12 +26,24 @@ namespace Test.Messaging
             //if (e.SelectedItem == null) return;
 
             var contact = e.SelectedItem as Contact;
+            var detailPage = new DetailPage(contact);
 
-            Detail = new NavigationPage(new DetailPage(contact));
+            //detailPage.SliderValueChanged += DetailPage_SliderValueChanged;
+            MessagingCenter.Subscribe<DetailPage, int>(this, Events.SliderValueChanged, DetailPage_SliderValueChanged);
+
+            //MessagingCenter.Unsubscribe<DetailPage>(this, "SliderValueChanged");
+
+            Detail = new NavigationPage(detailPage);
             IsPresented = false; //Is master presented?
 
             //await Navigation.PushAsync(new DetailPage(contact));
             //ContactListView.SelectedItem = null;
         }
+
+        void DetailPage_SliderValueChanged(DetailPage sender, int e)
+        {
+            SliderLabel.Text = "Slider value: " + e;
+        }
+
     }
 }

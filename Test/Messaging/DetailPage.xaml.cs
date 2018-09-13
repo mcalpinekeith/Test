@@ -9,6 +9,8 @@ namespace Test.Messaging
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DetailPage : ContentPage
     {
+        //public event EventHandler<int> SliderValueChanged;
+
         public DetailPage(Contact contact)
         {
             if (contact == null) throw new ArgumentNullException();
@@ -16,6 +18,15 @@ namespace Test.Messaging
             BindingContext = contact;
 
             InitializeComponent();
+        }
+
+        void Handle_ValueChanged(object sender, Xamarin.Forms.ValueChangedEventArgs e)
+        {
+            var value = (int)Math.Round(e.NewValue);
+
+            //SliderValueChanged?.Invoke(this, value);
+
+            MessagingCenter.Send(this, Events.SliderValueChanged, value);
         }
     }
 }

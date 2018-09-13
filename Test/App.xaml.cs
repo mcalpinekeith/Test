@@ -3,6 +3,8 @@ using Test.Navigation;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+//https://github.com/xamarin/XamarinComponents for plugins
+
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Test
 {

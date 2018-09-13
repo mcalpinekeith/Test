@@ -11,13 +11,17 @@
     
     <MasterDetailPage.Master>
         <ContentPage Title="Contacts">
-            <ListView x:Name="ContactListView" ItemSelected="Handle_ItemSelected">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Name}" Detail="{Binding Status}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>            
+            <StackLayout>
+                <Label x:Name="SliderLabel" Text="SliderLabel"/>
+                
+                <ListView x:Name="ContactListView" ItemSelected="Handle_ItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Name}" Detail="{Binding Status}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>  
+            </StackLayout>
         </ContentPage>
     </MasterDetailPage.Master>
     

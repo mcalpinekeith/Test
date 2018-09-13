@@ -7,6 +7,11 @@
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 50, 0, 50" />
     </ContentPage.Padding>
+    <StackLayout>
+        <Label Text="{Binding Name}"/>
+
+        <Slider x:Name="LabelSlider" Value="15" Maximum="100" Minimum="10" ValueChanged="Handle_ValueChanged" />
+        <Label x:Name="SliderLabel" Text="{Binding Source={x:Reference LabelSlider}, Path=Value, StringFormat='{0:N0}'}" />
+    </StackLayout>
     
-    <Label Text="{Binding Name}"/>
 </ContentPage>
