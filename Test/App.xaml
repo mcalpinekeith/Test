@@ -1,5 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Test.App">
     <Application.Resources>
+        <ResourceDictionary>
+            <x:Int32 x:Key="borderRadius">20</x:Int32>
+            <Color x:Key="buttonBackgroundColor">Gray</Color>
+            
+            <Style x:Key="button" TargetType="Button">
+                <!-- <Setter Property="BackgroundColor" Value="{StaticResource buttonBackgroundColor}"></Setter> -->
+                <Setter Property="BackgroundColor" Value="Gray"></Setter>
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="BorderRadius" Value="20"></Setter>
+                <Setter Property="FontAttributes" Value="Bold"></Setter>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Test.Resource.ResourcePage">
+    <!-- page level -->
+    <ContentPage.Resources> 
+        <ResourceDictionary>
+            <Color x:Key="buttonBackgroundColor">Green</Color>
+            <!-- no x:Key applies the style to all TargetTypes, BasedOn cannot be used (the buttons do not need Style to be set) -->
+            <Style x:Key="pageButton" TargetType="Button" BasedOn="{StaticResource button}">
+                <!-- <Setter Property="BackgroundColor" Value="{StaticResource buttonBackgroundColor}"></Setter> -->
+                <Setter Property="BackgroundColor" Value="Blue"></Setter>
+                <!-- <Setter Property="TextColor" Value="White"></Setter> -->
+                <!-- <Setter Property="BorderRadius" Value="20"></Setter> -->
+                <!-- <Setter Property="FontAttributes" Value="Bold"></Setter> -->
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="20">
+            <Button Text="Dynamic Resource"
+                    BackgroundColor="{DynamicResource buttonBackgroundColor}"
+                    TextColor="White"
+                    BorderRadius="{StaticResource borderRadius}"
+                    FontAttributes="Bold" />
+            
+            <Button Text="Static Resource 1"
+                    BackgroundColor="{StaticResource buttonBackgroundColor}"
+                    TextColor="White"
+                    BorderRadius="{StaticResource borderRadius}"
+                    FontAttributes="Bold" />
+
+            <Button Text="Static Resource 2" Style="{StaticResource pageButton}" />
+                    
+            
+            <Button Text="Change Style" Clicked="Handle_Clicked" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

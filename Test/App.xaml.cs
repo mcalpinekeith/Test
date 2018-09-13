@@ -51,7 +51,7 @@ namespace Test
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new Mvvm.Views.PlaylistPage());
+            MainPage = new NavigationPage(new Messaging.MasterPage());
 
             Properties["Username"] = "John";
         }

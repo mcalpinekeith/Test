@@ -31,6 +31,8 @@
     <Folder Include="Popup\" />
     <Folder Include="Toolbar\" />
     <Folder Include="Form\" />
+    <Folder Include="Resource\" />
+    <Folder Include="Messaging\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Images\smile.jpeg" />
