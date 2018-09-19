@@ -25,6 +25,8 @@ namespace Test.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
+            Xamarin.FormsMaps.Init();
+
             ImageCircleRenderer.Init();
 
             LoadApplication(new App());

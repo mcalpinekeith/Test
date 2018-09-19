@@ -15,9 +15,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xamarin.Forms" Version="3.2.0.839982" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="3.2.0.839982" />
+    <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -33,6 +35,8 @@
     <Folder Include="Form\" />
     <Folder Include="Resource\" />
     <Folder Include="Messaging\" />
+    <Folder Include="Maps\" />
+    <Folder Include="Foursquare\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Images\smile.jpeg" />
@@ -53,6 +57,9 @@
     <EmbeddedResource Update="Mvvm\Views\PlaylistPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Maps\PinClickedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Messaging\DetailPage.xaml.cs">

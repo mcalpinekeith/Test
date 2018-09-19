@@ -21,6 +21,8 @@ namespace Test.Droid
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
+            Xamarin.FormsMaps.Init(this, savedInstanceState);
+
             ImageCircleRenderer.Init();
 
             LoadApplication(new App());

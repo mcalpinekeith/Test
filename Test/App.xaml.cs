@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 //https://github.com/xamarin/XamarinComponents for plugins
+//Xam.Plugin or Xam.Plugins
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Test
@@ -53,7 +54,7 @@ namespace Test
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new Messaging.MasterPage());
+            MainPage = new NavigationPage(new Maps.MapPage());
 
             Properties["Username"] = "John";
         }

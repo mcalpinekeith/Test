@@ -6,9 +6,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Android", "Test.Androi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.iOS", "Test.iOS\Test.iOS.csproj", "{2FC5E7D5-2D38-4E7B-8688-8453F3CFF417}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{25D5DACB-1E03-49D2-A309-C1F1F7C21E89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{25D5DACB-1E03-49D2-A309-C1F1F7C21E89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Web", "Test.Web\Test.Web.csproj", "{C86D7394-EE94-428A-8325-389898EE4773}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Web", "Test.Web\Test.Web.csproj", "{C86D7394-EE94-428A-8325-389898EE4773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
