@@ -1,13 +1,13 @@
 ﻿using System;
 using SQLite;
 using Xamarin.Forms;
-using Test.Android.Interfaces;
+using Test.Droid.Interfaces;
 using System.IO;
 using Test.Interfaces;
 
 [assembly: Dependency(typeof(SQLiteService))]
 
-namespace Test.Android.Interfaces
+namespace Test.Droid.Interfaces
 {
     public class SQLiteService : ISQLiteService
     {

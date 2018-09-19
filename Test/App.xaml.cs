@@ -50,6 +50,10 @@ namespace Test
             }
         }
 
+        public static double CurrentLatitude { get; set; }
+        public static double CurrentLongitude { get; set; }
+        public static float CurrentZoom { get; set; }
+
         public App()
         {
             InitializeComponent();

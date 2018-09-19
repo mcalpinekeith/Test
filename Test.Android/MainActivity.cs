@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using ImageCircle.Forms.Plugin.Droid;
+using Plugin.Permissions;
 
 namespace Test.Droid
 {
@@ -24,6 +25,8 @@ namespace Test.Droid
             Xamarin.FormsMaps.Init(this, savedInstanceState);
 
             ImageCircleRenderer.Init();
+
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             LoadApplication(new App());
         }

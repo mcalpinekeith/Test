@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Plugin.Geolocator;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Plugin.Geolocator;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -31,6 +31,11 @@ namespace Test.Maps
             set { SetValue(CustomPinsProperty, value); }
         }
 
-        //public Func<string, string, Task> OnVisibleRegionChanged;
+        public Func<string, string, Task> OnVisibleRegionChanged;
+
+        public async Task<Plugin.Geolocator.Abstractions.Position> GetCurrentPositionAsync()
+        {
+            return await CrossGeolocator.Current.GetPositionAsync();
+        }
     }
 }

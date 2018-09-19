@@ -1,48 +1,43 @@
-﻿using System;
-using System.ComponentModel;
-using System.Collections.Generic;
+﻿using CoreLocation;
 using MapKit;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Test.iOS.Maps;
 using Test.Maps;
+using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.iOS;
-using System.Threading.Tasks;
-using UIKit;
-using CoreLocation;
-using Plugin.Geolocator;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace Test.iOS.Maps
 {
     public class CustomMapRenderer : MapRenderer
     {
-        private readonly List<MKPolyline> _polyLines = new List<MKPolyline>();
-        private MKPolylineRenderer polylineRenderer;
-        private MKPolyline routeOverlay;
-        private CustomMap customMap;
-        private MKMapView mapView;
+        private readonly List<MKPolyline> _polylines = new List<MKPolyline>();
+        private MKPolylineRenderer _polylineRenderer;
+        private MKPolyline _routeOverlay;
+        private CustomMap _customMap;
+        private MKMapView _mapView;
 
-        public string TopLeft { get; set; }
-        public string BottomRight { get; set; }
         public bool IsRegionChange = true;
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
 
-            customMap = sender as CustomMap;
-
-            if (mapView == null)
+            if (_mapView == null)
             {
-                mapView = Control as MKMapView;
-                mapView.ZoomEnabled = true;
-                mapView.ScrollEnabled = true;
+                _mapView = Control as MKMapView;
+                _mapView.ZoomEnabled = true;
+                _mapView.ScrollEnabled = true;
+                _customMap = sender as CustomMap;
             }
 
-            if (mapView != null && IsRegionChange)
+            if (_mapView != null && IsRegionChange)
             {
-                //mapView.RegionChanged += NativeMap_RegionChanged;
+                _mapView.RegionChanged += MapView_RegionChanged;
 
                 Redraw();
                 IsRegionChange = false;
@@ -52,9 +47,11 @@ namespace Test.iOS.Maps
 
             if (e.PropertyName == CustomMap.RouteCoordinatesProperty.PropertyName)
             {
-                if (mapView == null) return;
+                _customMap = sender as CustomMap;
 
-                if (customMap.RouteCoordinates.Count > 0)
+                if (_mapView == null) return;
+
+                if (_customMap.RouteCoordinates.Count > 0)
                 {
                     UpdateRouteCoordinates();
                 }
@@ -66,13 +63,14 @@ namespace Test.iOS.Maps
 
             if (e.PropertyName == CustomMap.CustomPinsProperty.PropertyName)
             {
-                customMap.Pins.Clear();
+                _customMap = sender as CustomMap;
+                _customMap.Pins.Clear();
 
-                if (customMap.CustomPins != null)
+                if (_customMap.CustomPins != null)
                 {
-                    foreach (var customPin in customMap.CustomPins)
+                    foreach (var customPin in _customMap.CustomPins)
                     {
-                        customMap.Pins.Add(customPin.Pin);
+                        _customMap.Pins.Add(customPin.Pin);
                     }
                 }
 
@@ -80,67 +78,56 @@ namespace Test.iOS.Maps
             }
         }
 
-        private void RemoveRouteCoordinates()
+        private void Redraw()
         {
-            if (_polyLines != null && _polyLines.Count > 0)
+            if (_customMap == null) return;
+
+            if (_customMap.RouteCoordinates != null && _customMap.RouteCoordinates.Count > 0) UpdateRouteCoordinates();
+
+            if (_customMap.CustomPins != null && _customMap.CustomPins.Count > 0) PlotPins();
+        }
+
+        private async void MapView_RegionChanged(object sender, MKMapViewChangeEventArgs e)
+        {
+            if (Element == null) return;
+
+            _mapView.ZoomEnabled = true;
+            _mapView.ScrollEnabled = true;
+            _mapView.RegionChanged -= MapView_RegionChanged;
+
+            var center = _mapView.Region.Center;
+
+            //This solves the problem of MKMAPVIEW to Reset its view to FirstLocation  
+            _customMap.MoveToRegion(new MapSpan(new Position(center.Latitude, center.Longitude), _mapView.Region.Span.LatitudeDelta, _mapView.Region.Span.LongitudeDelta));
+
+            _mapView.RegionChanged += MapView_RegionChanged;
+
+            if (_customMap.OnVisibleRegionChanged != null)
             {
-                mapView.RemoveOverlays(mapView.Overlays);
-                _polyLines.Clear();
+                var halfheightDegrees = _mapView.Region.Span.LatitudeDelta / 2;
+                var halfwidthDegrees = _mapView.Region.Span.LongitudeDelta / 2;
+
+                var left = Math.Round(center.Longitude - halfwidthDegrees, 2);
+                var right = Math.Round(center.Longitude + halfwidthDegrees, 2);
+
+                var top = Math.Round(center.Latitude + halfheightDegrees, 2);
+                var bottom = Math.Round(center.Latitude - halfheightDegrees, 2);
+
+                if (left < -180) left = 180 + (180 + left);
+                if (right > 180) right = (right - 180) - 180;
+
+                var topLeft = top.ToString() + "," + left.ToString();
+                var bottomRight = bottom.ToString() + "," + right.ToString();
+
+                await _customMap.OnVisibleRegionChanged(bottomRight, topLeft);
             }
         }
 
-        private void Redraw()
-        {
-            if (customMap == null) return;
-
-            if (customMap.RouteCoordinates != null && customMap.RouteCoordinates.Count > 0) UpdateRouteCoordinates();
-
-            if (customMap.CustomPins != null && customMap.CustomPins.Count > 0) PlotPins();
-        }
-
-        //private async void NativeMap_RegionChanged(object sender, MKMapViewChangeEventArgs e)
-        //{
-        //    if (Element == null) return;
-        //
-        //    CalculateBounds(mapView);
-        //
-        //    mapView.ZoomEnabled = true;
-        //    mapView.ScrollEnabled = true;
-        //    mapView.RegionChanged -= NativeMap_RegionChanged;
-        //
-        //    //This solves the problem of MKMAPVIEW to Reset its view to FirstLocation  
-        //    customMap.MoveToRegion(new MapSpan(new Position(mapView.Region.Center.Latitude, mapView.Region.Center.Longitude), mapView.Region.Span.LatitudeDelta, mapView.Region.Span.LongitudeDelta));
-        //
-        //    mapView.RegionChanged += NativeMap_RegionChanged;
-        //
-        //    if (BottomRight != null && TopLeft != null && customMap.OnVisibleRegionChanged != null)
-        //    {
-        //        await customMap.OnVisibleRegionChanged(BottomRight, TopLeft);
-        //    }
-        //}
-
-        //public void CalculateBounds(MKMapView map)
-        //{
-        //    var center = map.Region.Center;
-        //    var halfheightDegrees = map.Region.Span.LatitudeDelta / 2;
-        //    var halfwidthDegrees = map.Region.Span.LongitudeDelta / 2;
-        //    var left = Math.Round(center.Longitude - halfwidthDegrees, 2);
-        //    var right = Math.Round(center.Longitude + halfwidthDegrees, 2);
-        //    var top = Math.Round(center.Latitude + halfheightDegrees, 2);
-        //    var bottom = Math.Round(center.Latitude - halfheightDegrees, 2);
-        //
-        //    if (left < -180) left = 180 + (180 + left);
-        //    if (right > 180) right = (right - 180) - 180;
-        //
-        //    TopLeft = top.ToString() + "," + left.ToString();
-        //    BottomRight = bottom.ToString() + "," + right.ToString();
-        //}
-
         private void PlotPins()
         {
-            if (mapView == null) return;
+            if (_mapView == null) return;
 
-            mapView.GetViewForAnnotation = GetViewForAnnotation;
+            _mapView.GetViewForAnnotation = GetViewForAnnotation;
         }
 
         private static MKAnnotationView GetViewForAnnotation(CustomMapRenderer instance, MKMapView view, IMKAnnotation annotation)
@@ -168,7 +155,7 @@ namespace Test.iOS.Maps
         {
             var position = new Position(pointAnnotation.Coordinate.Latitude, pointAnnotation.Coordinate.Longitude);
 
-            foreach (var customPin in customMap.CustomPins)
+            foreach (var customPin in _customMap.CustomPins)
             {
                 if (customPin.Pin.Position != position) continue;
                 if (string.IsNullOrEmpty(customPin.Pin.Label)) continue;
@@ -183,11 +170,11 @@ namespace Test.iOS.Maps
         [Foundation.Export("mapView:rendererForOverlay:")]
         private MKPolylineRenderer GetOverlayRenderer(MKMapView view, IMKOverlay overlay)
         {
-            if (polylineRenderer == null)
+            if (_polylineRenderer == null)
             {
                 var o = ObjCRuntime.Runtime.GetNSObject(overlay.Handle) as MKPolyline;
 
-                polylineRenderer = new MKPolylineRenderer(o)
+                _polylineRenderer = new MKPolylineRenderer(o)
                 {
                     FillColor = UIColor.Blue,
                     StrokeColor = UIColor.Blue,
@@ -196,17 +183,17 @@ namespace Test.iOS.Maps
                 };
             }
 
-            return polylineRenderer;
+            return _polylineRenderer;
         }
 
         private void UpdateRouteCoordinates()
         {
-            if (mapView == null) return;
+            if (_mapView == null) return;
 
             RemoveRouteCoordinates();
-            mapView.OverlayRenderer = GetOverlayRenderer;
+            _mapView.OverlayRenderer = GetOverlayRenderer;
 
-            foreach (var routeCoordinates in customMap.RouteCoordinates)
+            foreach (var routeCoordinates in _customMap.RouteCoordinates)
             {
                 foreach (var positionEstimate in routeCoordinates.PositionEstimates)
                 {
@@ -219,20 +206,29 @@ namespace Test.iOS.Maps
                         index++;
                     }
 
-                    routeOverlay = MKPolyline.FromCoordinates(coordinates);
+                    _routeOverlay = MKPolyline.FromCoordinates(coordinates);
 
                     var trackColor = GetColor(routeCoordinates.Color);
-                    var o = ObjCRuntime.Runtime.GetNSObject(routeOverlay.Handle) as MKPolyline;
+                    var o = ObjCRuntime.Runtime.GetNSObject(_routeOverlay.Handle) as MKPolyline;
 
-                    polylineRenderer = new MKPolylineRenderer(o)
+                    _polylineRenderer = new MKPolylineRenderer(o)
                     {
                         StrokeColor = trackColor,
                         LineWidth = 1
                     };
 
-                    mapView.AddOverlay(routeOverlay);
-                    _polyLines.Add(routeOverlay);
+                    _mapView.AddOverlay(_routeOverlay);
+                    _polylines.Add(_routeOverlay);
                 }
+            }
+        }
+
+        private void RemoveRouteCoordinates()
+        {
+            if (_polylines != null && _polylines.Count > 0)
+            {
+                _mapView.RemoveOverlays(_mapView.Overlays);
+                _polylines.Clear();
             }
         }
 
@@ -254,6 +250,7 @@ namespace Test.iOS.Maps
 
                 case "5":
                     return UIColor.FromRGB(175, 98, 46);
+
                 default:
                     return UIColor.Orange;
             }
