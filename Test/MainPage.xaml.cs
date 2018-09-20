@@ -40,6 +40,9 @@ namespace Test
 
             BannerImage.Source = bannerImageSource;
 
+            //icon@2x = 50px by 50px
+            //icon@3x = 75px by 75px
+
             //SmileImage.Source = ImageSource.FromResource("Test.Resources.Images.smile.jpeg");
 
             //path = Device.OnPlatForm(

@@ -19,6 +19,10 @@ namespace Test.Maps
             _viewModel = new VenueCollectionViewModel();
 
             InitializeComponent();
+
+            _locator = CrossGeolocator.Current;
+
+            _locator.PositionChanged += Locator_PositionChanged;
         }
 
         protected override async void OnAppearing()
@@ -28,14 +32,10 @@ namespace Test.Maps
             //RouteCoordinates = "{Binding RouteCoordinates}"
             //CustomPins = "{Binding CustomPins}"
 
-            _locator = CrossGeolocator.Current;
-
             if (!_locator.IsListening)
             {
                 await _locator.StartListeningAsync(new TimeSpan(), 100); // User must move at least 100 meters before event fires
             }
-
-            _locator.PositionChanged += Locator_PositionChanged;
 
             //var position = await _locator.GetPositionAsync();
 
@@ -57,7 +57,7 @@ namespace Test.Maps
 
             var pin = new Pin
             {
-                Type = PinType.Place,
+                Type = PinType.SavedPin,
                 Position = center,
                 Label = "Home"
             };
