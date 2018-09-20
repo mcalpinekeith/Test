@@ -16,6 +16,8 @@ namespace Test.Maps
 
         public MapPage()
         {
+            _viewModel = new VenueCollectionViewModel();
+
             InitializeComponent();
         }
 
@@ -35,9 +37,9 @@ namespace Test.Maps
 
             _locator.PositionChanged += Locator_PositionChanged;
 
-            var position = await _locator.GetPositionAsync();
+            //var position = await _locator.GetPositionAsync();
 
-            await MoveMapToRegion(position);
+            //await MoveMapToRegion(position);
 
             //http://maps.googleapis.com/maps/api/directions/json?origin=34.7304,-86.5861&destination=1314+College+Ave+Davenport+IA&key=AIzaSyAVC3Izu_adI7wYdmhEBDyqvK1A8r-iFDQ
         }
@@ -65,14 +67,14 @@ namespace Test.Maps
 
             map.MoveToRegion(mapSpan);
 
-            var venues = await FoursquareService.GetVenues(34.7304, -86.5861);
+            var venues = await FoursquareService.GetVenues(position.Latitude, position.Longitude);
 
             _viewModel.SetVenues(venues);
         }
 
         private async void HuntsvilleButton_Clicked(object sender, System.EventArgs e)
         {
-            //34.7304° N, 86.5861 W
+            //34.7304° N, 86.5861° W
             await MoveMapToRegion(new Plugin.Geolocator.Abstractions.Position(34.7304, -86.5861));
         }
 

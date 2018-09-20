@@ -43,7 +43,7 @@ namespace Test.Maps.ViewModels
             SelectedVenue = null;
         }
 
-        internal void SetVenues(List<Venue> venues)
+        public void SetVenues(List<Venue> venues)
         {
             Venues.Clear();
 

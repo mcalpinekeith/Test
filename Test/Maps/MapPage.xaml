@@ -24,14 +24,22 @@
             <ListView SelectedItem="{Binding SelectedVenue, Mode=TwoWay}"
                       ItemsSource="{Binding Venues}"
                       ItemSelected="OnVenueSelected"
+
+                      RelativeLayout.HeightConstraint="{ConstraintExpression 
+                        Type=RelativeToView, ElementName=map, Property=Height, Factor=0.5, Constant=0}"
+
+                      RelativeLayout.WidthConstraint="{ConstraintExpression 
+                        Type=RelativeToView, ElementName=map, Property=Width, Factor=0.5, Constant=0}"
+
                       RelativeLayout.YConstraint="{ConstraintExpression 
-                        Type=RelativeToView, ElementName=huntsvilleButton, Property=Y, Factor=1, Constant=20}"
+                        Type=RelativeToView, ElementName=huntsvilleButton, Property=Y, Factor=1, Constant=50}"
+                      
                       RelativeLayout.XConstraint="{ConstraintExpression 
-                        Type=RelativeToView, ElementName=map, Property=X, Factor=1, Constant=20}">
+                        Type=RelativeToView, ElementName=huntsvilleButton, Property=X, Factor=1, Constant=0}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Name}" 
-                                  Detail="{Binding Distance, StringFormat='{0} mi.'}" />
+                                  Detail="{Binding Distance, StringFormat=' {0} mi.'}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
