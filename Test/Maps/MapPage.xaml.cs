@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Test.Foursquare;
+using Test.Maps.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -34,25 +35,19 @@ namespace Test.Maps
 
             _locator.PositionChanged += Locator_PositionChanged;
 
-            await SetCurrentPosition();
+            var position = await _locator.GetPositionAsync();
+
+            await MoveMapToRegion(position);
 
             //http://maps.googleapis.com/maps/api/directions/json?origin=34.7304,-86.5861&destination=1314+College+Ave+Davenport+IA&key=AIzaSyAVC3Izu_adI7wYdmhEBDyqvK1A8r-iFDQ
         }
 
-        public async Task SetCurrentPosition()
+        private async void Locator_PositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
         {
-            var position = await _locator.GetPositionAsync();
-
-            MoveMapToRegion(position);
+            await MoveMapToRegion(e.Position);
         }
 
-        private void Locator_PositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
-        {
-
-            MoveMapToRegion(e.Position);
-        }
-
-        private void MoveMapToRegion(Plugin.Geolocator.Abstractions.Position position)
+        private async Task MoveMapToRegion(Plugin.Geolocator.Abstractions.Position position)
         {
             var center = new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude);
             var distance = Distance.FromMiles(1.0);
@@ -69,14 +64,27 @@ namespace Test.Maps
             map.Pins.Add(pin);
 
             map.MoveToRegion(mapSpan);
+
+            var venues = await FoursquareService.GetVenues(34.7304, -86.5861);
+
+            _viewModel.SetVenues(venues);
         }
 
-        void HuntsvilleButton_Clicked(object sender, System.EventArgs e)
+        private async void HuntsvilleButton_Clicked(object sender, System.EventArgs e)
         {
             //34.7304° N, 86.5861 W
-            MoveMapToRegion(new Plugin.Geolocator.Abstractions.Position(34.7304, -86.5861));
+            await MoveMapToRegion(new Plugin.Geolocator.Abstractions.Position(34.7304, -86.5861));
+        }
 
-            var venues = FoursquareService.GetVenues(34.7304, -86.5861);
+        private VenueCollectionViewModel _viewModel
+        {
+            get => BindingContext as VenueCollectionViewModel;
+            set => BindingContext = value;
+        }
+
+        void OnVenueSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            _viewModel.SelectVenueCommand.Execute(e.SelectedItem);
         }
     }
 }

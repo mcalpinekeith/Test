@@ -37,6 +37,7 @@
     <Folder Include="Messaging\" />
     <Folder Include="Maps\" />
     <Folder Include="Foursquare\" />
+    <Folder Include="Maps\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Images\smile.jpeg" />

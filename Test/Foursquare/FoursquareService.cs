@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Test.Foursquare
 {
     public class FoursquareService
     {
-
-        public FoursquareService()
-        {
-        }
-
         public async static Task<List<Venue>> GetVenues(double latitude, double longitude)
         {
             var venues = new List<Venue>();
@@ -21,6 +17,10 @@ namespace Test.Foursquare
                 var url = GetUrl(latitude, longitude);
                 var response = await client.GetAsync(url);
                 var json = await response.Content.ReadAsStringAsync();
+
+                var venueSearchResults = JsonConvert.DeserializeObject<VenueSearchResult>(json);
+
+                venues = venueSearchResults.response.venues as List<Venue>;
             }
 
             return venues;
