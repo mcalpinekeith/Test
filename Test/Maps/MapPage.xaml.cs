@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
+using Plugin.Permissions;
 using Test.Foursquare;
 using Test.Maps.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using Plugin.Permissions.Abstractions;
 
 namespace Test.Maps
 {
@@ -32,14 +34,42 @@ namespace Test.Maps
             //RouteCoordinates = "{Binding RouteCoordinates}"
             //CustomPins = "{Binding CustomPins}"
 
-            if (!_locator.IsListening)
+            try
             {
-                await _locator.StartListeningAsync(new TimeSpan(), 100); // User must move at least 100 meters before event fires
+                var locationStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+
+                if (locationStatus != PermissionStatus.Granted)
+                {
+                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                    {
+                        await DisplayAlert("Need Permission", "We want to know where you are", "OK");
+                    }
+
+                    var locationResult = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+
+                    if (locationResult.ContainsKey(Permission.Location)) locationStatus = locationResult[Permission.Location];
+                }
+
+                if (locationStatus == PermissionStatus.Granted)
+                {
+                    if (!_locator.IsListening)
+                    {
+                        await _locator.StartListeningAsync(new TimeSpan(), 100); // User must move at least 100 meters before event fires
+                    }
+
+                    var position = await _locator.GetPositionAsync();
+
+                    await MoveMapToRegion(position);
+                }
+                else
+                {
+                    await DisplayAlert("Need Permission", "Don't have location permission.", "OK");
+                }
             }
-
-            //var position = await _locator.GetPositionAsync();
-
-            //await MoveMapToRegion(position);
+            catch (Exception ex)
+            {
+                var t = ex;
+            }
 
             //http://maps.googleapis.com/maps/api/directions/json?origin=34.7304,-86.5861&destination=1314+College+Ave+Davenport+IA&key=AIzaSyAVC3Izu_adI7wYdmhEBDyqvK1A8r-iFDQ
         }

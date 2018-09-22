@@ -5,7 +5,7 @@ using Xamarin.Forms.Xaml;
 
 //https://github.com/xamarin/XamarinComponents for plugins
 //Xam.Plugin or Xam.Plugins
-
+//microsoft.azure.mobile.client
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Test
 {

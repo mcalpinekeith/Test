@@ -23,6 +23,8 @@ namespace Test.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            // Add this for Fast Renderers
+            global::Xamarin.Forms.Forms.SetFlags("FastRenderers_Experimental");
             global::Xamarin.Forms.Forms.Init();
 
             Xamarin.FormsMaps.Init();
